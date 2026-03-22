@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h2>Menu</h2>
+
+<div th:each="item : ${items}">
+    <p th:text="${item.itemName}"></p>
+    <p th:text="${item.price}"></p>
+</div>
+
+<form action="/order" method="post">
+    <button>Place Order</button>
+</form>
+
+</body>
+</html>

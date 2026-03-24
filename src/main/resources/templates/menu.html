@@ -1,115 +1,154 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-body {
-    background: linear-gradient(135deg, #43cea2, #185a9d);
+body{
+background: linear-gradient(135deg, #2a0845, #6441a5, #7f5af0);
+color: white;
 }
 
-.card {
-    border-radius: 15px;
-    transition: 0.3s;
+/* NAVBAR */
+.navbar{
+backdrop-filter:blur(12px);
+background:rgba(0,0,0,0.4)!important;
+margin:10px;
+border-radius:12px;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+/* CARD */
+.card{
+border-radius:20px;
+background: linear-gradient(
+    135deg,
+    rgba(210,180,255,0.4),
+    rgba(160,120,255,0.3)
+);
+backdrop-filter: blur(15px);
+border: 1px solid rgba(255,255,255,0.15);
+box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+transition:0.4s;
+}
+.card:hover{
+transform:translateY(-10px) scale(1.05);
 }
 
-.qty-btn {
-    width: 35px;
-    height: 35px;
-    border: none;
-    background: black;
-    color: white;
-    border-radius: 50%;
+/* FLOAT ANIMATION */
+.float{
+animation:float 3s infinite;
+}
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
 }
 
-.qty-btn:hover {
-    background: #ff9800;
+/* IMAGE */
+img{
+height:180px;
+width:100%;
+object-fit:cover;
+border-radius:12px;
+transition:0.3s;
 }
 
-img {
-    height: 180px;
-    object-fit: cover;
+.card:hover img{
+transform:scale(1.05);
+}
+
+/* INPUT */
+.form-control{
+background: rgba(255,255,255,0.2);
+border: none;
+color: white;
+}
+.form-control::placeholder{
+color: rgba(255,255,255,0.7);
+}
+
+/* BUTTONS */
+.btn-warning{
+background:#ffd43b !important;
+color:black !important;
+border:none;
+}
+
+.btn-info,
+.btn-success{
+background:white !important;
+color:#5a189a !important;
+border:none;
+}
+
+/* LOGOUT BUTTON */
+.btn-danger{
+background:#ff6b6b !important;
+border:none;
+}
+
+/* HOVER */
+.btn:hover{
+transform:scale(1.08);
 }
 </style>
-
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-dark px-4">
-    <span class="navbar-brand">🍔 Food Delivery</span>
-    <a href="/cart" class="btn btn-warning">
-        🛒 Cart (<span th:text="${cartItems.size()}"></span>)
-    </a>
+<!-- NAVBAR -->
+<nav class="navbar px-4">
+<span class="fw-bold">🍔 Food Delivery</span>
+<div class="ms-auto">
+<a href="/cart" class="btn btn-warning">Cart</a>
+<a href="/orders" class="btn btn-info">Orders</a>
+<a href="/track" class="btn btn-success">Track</a>
+<button onclick="toggleDark()" class="btn btn-light">🌙</button>
+<a href="/logout" class="btn btn-danger">Logout</a>
+</div>
 </nav>
 
 <div class="container mt-4">
 
-<h2 class="text-center text-white mb-4">🍽️ Menu</h2>
+<h2 class="text-center mb-4">🍽️ Menu</h2>
 
 <form action="/addToCart" method="post">
 
 <div class="row">
 
-<div class="col-md-4 mb-4" th:each="item : ${items}">
-    
-    <div class="card p-3 shadow text-center">
+<div class="col-md-4 mb-4" th:each="item:${items}">
+<div class="card p-3 text-center float">
 
-        <img src="https://images.unsplash.com/photo-1604908176997-4319c8b8c4a2"
-             class="img-fluid rounded mb-3">
+<!-- ✅ DYNAMIC IMAGE -->
+<img th:src="${item.imageUrl != null ? item.imageUrl : 'https://via.placeholder.com/300'}"
+     alt="Food Image">
 
-        <h5 th:text="${item.itemName}" class="fw-bold"></h5>
+<h5 th:text="${item.itemName}"></h5>
 
-        <p class="text-success fs-5">
-            ₹<span th:text="${item.price}"></span>
-        </p>
+<p class="text-warning">₹<span th:text="${item.price}"></span></p>
 
-        <input type="checkbox" name="menuIds" th:value="${item.menuId}">
+<input type="checkbox" name="menuIds" th:value="${item.menuId}">
 
-        <div class="d-flex justify-content-center mt-2">
+<input type="number"
+th:name="'quantities['+${item.menuId}+']'"
+value="1" min="1"
+class="form-control mt-2">
 
-            <button type="button" class="qty-btn" onclick="dec(this)">-</button>
-
-            <!-- ✅ FIXED -->
-            <input type="number"
-                   th:name="'quantities[' + ${item.menuId} + ']'"
-                   value="1" min="1"
-                   class="mx-2 text-center form-control"
-                   style="width:70px;">
-
-            <button type="button" class="qty-btn" onclick="inc(this)">+</button>
-
-        </div>
-
-    </div>
-
+</div>
 </div>
 
 </div>
 
 <div class="text-center">
-    <button class="btn btn-warning px-5">Add to Cart</button>
+<button class="btn btn-warning">Add to Cart</button>
 </div>
 
 </form>
-
 </div>
 
 <script>
-function inc(btn){
-    let input = btn.parentElement.querySelector("input");
-    input.value++;
-}
-
-function dec(btn){
-    let input = btn.parentElement.querySelector("input");
-    if(input.value > 1) input.value--;
+function toggleDark(){
+document.body.classList.toggle("dark");
 }
 </script>
 

@@ -40,11 +40,10 @@ public class AuthController {
         return "redirect:/";
     }
 
-    // ✅ SESSION LOGIN
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
-                        jakarta.servlet.http.HttpSession session) {
+                        HttpSession session) {
 
         User user = userRepo.findByEmailAndPassword(email, password);
 

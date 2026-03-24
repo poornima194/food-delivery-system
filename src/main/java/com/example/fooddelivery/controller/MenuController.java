@@ -25,7 +25,6 @@ public class MenuController {
         this.orderRepo = orderRepo;
     }
 
-    // 🔐 PROTECTED MENU
     @GetMapping("/menu")
     public String showMenu(Model model, HttpSession session) {
 
@@ -39,7 +38,6 @@ public class MenuController {
         return "menu";
     }
 
-    // ✅ FIXED CART
     @PostMapping("/addToCart")
     public String addToCart(@RequestParam("menuIds") int[] menuIds,
                            @RequestParam Map<String, String> params) {
@@ -73,7 +71,6 @@ public class MenuController {
         return "cart";
     }
 
-    // ❌ REMOVE FIXED
     @GetMapping("/remove")
     public String removeItem(@RequestParam("index") int index) {
 
@@ -85,7 +82,6 @@ public class MenuController {
         return "redirect:/cart";
     }
 
-    // 💳 PAYMENT PAGE
     @GetMapping("/payment")
     public String paymentPage(Model model) {
 
@@ -96,7 +92,6 @@ public class MenuController {
         return "payment";
     }
 
-    // 📦 SAVE ORDER
     @PostMapping("/order")
     public String placeOrder() {
 
@@ -113,6 +108,7 @@ public class MenuController {
         order.setTotal(total);
         order.setStatus("Placed");
         order.setPaymentStatus("PAID");
+        order.setDeliveryStatus("Preparing");
 
         orderRepo.save(order);
 
@@ -122,10 +118,16 @@ public class MenuController {
         return "redirect:/orders";
     }
 
-    // 📦 ORDER HISTORY
     @GetMapping("/orders")
     public String orderHistory(Model model) {
         model.addAttribute("orders", orderRepo.findAll());
         return "orders";
     }
+
+    @GetMapping("/track")
+    public String track(Model model) {
+        model.addAttribute("orders", orderRepo.findAll());
+        return "track";
+    }
+    
 }

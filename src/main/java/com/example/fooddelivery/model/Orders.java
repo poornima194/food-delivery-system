@@ -13,6 +13,7 @@ public class Orders {
     private double total;
     private String status;
     private String paymentStatus;
+    private String deliveryStatus;
 
     // getters & setters
     public int getOrderId() { return orderId; }
@@ -29,4 +30,13 @@ public class Orders {
 
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+    
+    public String getDeliveryStatus() {
+        return deliveryStatus;
+    }
+    
+    public void setDeliveryStatus(String deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
 }

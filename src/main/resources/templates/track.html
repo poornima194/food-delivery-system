@@ -23,21 +23,23 @@ margin:10px;
 border-radius:20px;
 background: linear-gradient(
     135deg,
-    rgba(210,180,255,0.4),
-    rgba(160,120,255,0.3)
+    rgba(210,180,255,0.35),
+    rgba(160,120,255,0.25)
 );
-backdrop-filter: blur(15px);
-box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+backdrop-filter: blur(12px);
+padding:15px;
 border: 1px solid rgba(255,255,255,0.15);
-transition:0.4s;
+box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+transition:0.3s;
 }
 .card:hover{
-transform:scale(1.03);
+transform:scale(1.05);
 }
 
 /* TEXT FIX */
-.card h2{
-color:white;
+.card h6,
+.card p {
+color: white;
 }
 
 /* BUTTONS */
@@ -47,14 +49,20 @@ color:black !important;
 border:none;
 }
 
-.btn-success,
-.btn-primary,
-.btn-info{
+.btn-info,
+.btn-primary{
 background:white !important;
 color:#5a189a !important;
 border:none;
 }
 
+/* BADGE */
+.badge{
+background:#ffd43b !important;
+color:black !important;
+}
+
+/* HOVER */
 .btn:hover{
 transform:scale(1.08);
 }
@@ -66,39 +74,35 @@ transform:scale(1.08);
 
 <!-- NAVBAR -->
 <nav class="navbar px-4">
-<span class="fw-bold">💳 Payment</span>
+<span class="fw-bold">🚚 Tracking</span>
 <div>
 <a href="/menu" class="btn btn-warning">Menu</a>
 <a href="/cart" class="btn btn-info">Cart</a>
 <a href="/orders" class="btn btn-primary">Orders</a>
-<a href="/track" class="btn btn-success">Track</a>
 <button onclick="toggleDark()" class="btn btn-light">🌙</button>
 </div>
 </nav>
 
-<div class="container mt-5 text-center">
+<div class="container mt-5">
 
-<div class="card p-4 mx-auto" style="max-width:400px;">
+<h2 class="text-center mb-4">🚚 Track Orders</h2>
 
-<h2>💳 Payment</h2>
+<div class="row">
 
-<h4 class="text-warning mt-3">
-₹<span th:text="${total}"></span>
-</h4>
+<div class="col-md-6 mb-3" th:each="order:${orders}">
 
-<form action="/order" method="post">
+<div class="card">
 
-<select class="form-control mt-3 mb-3">
-<option>UPI</option>
-<option>Card</option>
-<option>Cash on Delivery</option>
-</select>
+<h6>🍽️ Items</h6>
+<p th:text="${order.items}"></p>
 
-<button class="btn btn-success w-100">
-Pay Now
-</button>
+<h6>Status</h6>
+<span class="badge"
+th:text="${order.deliveryStatus}"></span>
 
-</form>
+</div>
+
+</div>
 
 </div>
 

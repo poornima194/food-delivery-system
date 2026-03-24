@@ -81,6 +81,12 @@ color:#5a189a !important;
 border:none;
 }
 
+.btn-light{
+background:white !important;
+color:#5a189a !important;
+border:none;
+}
+
 /* LOGOUT BUTTON */
 .btn-danger{
 background:#ff6b6b !important;
@@ -98,13 +104,24 @@ transform:scale(1.08);
 
 <!-- NAVBAR -->
 <nav class="navbar px-4">
-<span class="fw-bold">🍔 Food Delivery</span>
+<span class="fw-bold">
+🍔 Food Delivery 
+<span th:if="${session.user.role == 'ADMIN'}">👑</span>
+</span>
+
 <div class="ms-auto">
+
+<!-- 👨‍💼 ADMIN BUTTON -->
+<a th:if="${session.user.role == 'ADMIN'}"
+   href="/admin"
+   class="btn btn-light">Admin</a>
+
 <a href="/cart" class="btn btn-warning">Cart</a>
 <a href="/orders" class="btn btn-info">Orders</a>
 <a href="/track" class="btn btn-success">Track</a>
 <button onclick="toggleDark()" class="btn btn-light">🌙</button>
 <a href="/logout" class="btn btn-danger">Logout</a>
+
 </div>
 </nav>
 

@@ -94,9 +94,76 @@ transform:scale(1.08);
 <option>Cash on Delivery</option>
 </select>
 
-<button class="btn btn-success w-100">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<button type="button" onclick="payNow()" class="btn btn-success w-100">
 Pay Now
 </button>
+
+<script>
+function payNow(){
+
+    fetch('/createOrder', {method:'POST'})
+    .then(res => res.json())
+    .then(data => {
+
+        var options = {
+            "key": "rzp_test_SVXcXvwVu4o7PM",
+
+            "amount": data.amount,
+            "currency": "INR",
+            "name": "Food Delivery",
+            "description": "Order Payment",
+			"order_id": data.id,
+
+            // 🔥 ADD THIS (FORCE METHODS)
+            "method": {
+                "upi": true,
+                "card": true,
+                "netbanking": true,
+                "wallet": true
+            },
+
+            // 🔥 ADD PREFILL (OPTIONAL BUT GOOD)
+            "prefill": {
+                "name": "Test User",
+                "email": "test@example.com",
+                "contact": "9999999999"
+            },
+
+            "handler": function (response){
+				
+				console.log(response);
+
+                fetch('/verifyPayment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(res => res.text())
+                .then(data => {
+
+                    if(data === "success"){
+                        alert("Payment Verified & Order Placed!");
+                        window.location.href = "/orders";
+                    } else {
+                        alert("Payment verification failed!");
+                    }
+                });
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    });
+}
+</script>
 
 </form>
 

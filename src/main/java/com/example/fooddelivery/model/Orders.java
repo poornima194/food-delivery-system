@@ -16,7 +16,7 @@ public class Orders {
     private String deliveryStatus;
     private int progress;
 
-    // 🔥 NEW PAYMENT FIELDS
+    
     private String paymentId;
     private String razorpayOrderId;
     private String signature;
@@ -24,7 +24,7 @@ public class Orders {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
-    // GETTERS & SETTERS
+    
 
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }

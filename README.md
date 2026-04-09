@@ -114,3 +114,6 @@ This project demonstrates:
 ## Tracking page
 
 <img width="1742" height="703" alt="image" src="https://github.com/user-attachments/assets/fcc060d8-3126-4897-98c6-5fbfb28ffb22" />
+
+# Demo Video
+[Click here to watch the video]-(https://github.com/user-attachments/assets/9c0a6bd0-4cbf-462d-b6f2-5391a479b37a)

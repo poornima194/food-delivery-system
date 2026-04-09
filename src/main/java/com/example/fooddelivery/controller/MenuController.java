@@ -25,7 +25,7 @@ public class MenuController {
         this.orderRepo = orderRepo;
     }
 
-    // 🔹 MENU PAGE
+    
     @GetMapping("/menu")
     public String showMenu(Model model, HttpSession session) {
 
@@ -39,7 +39,7 @@ public class MenuController {
         return "menu";
     }
 
-    // 🔹 ADD TO CART
+    
     @PostMapping("/addToCart")
     public String addToCart(@RequestParam("menuIds") int[] menuIds,
                            @RequestParam Map<String, String> params,
@@ -71,7 +71,7 @@ public class MenuController {
         return "redirect:/cart";
     }
 
-    // 🔹 VIEW CART
+    
     @GetMapping("/cart")
     public String viewCart(Model model, HttpSession session) {
 
@@ -91,7 +91,7 @@ public class MenuController {
         return "cart";
     }
 
-    // 🔹 REMOVE ITEM
+    
     @GetMapping("/remove")
     public String removeItem(@RequestParam("index") int index, HttpSession session) {
 
@@ -109,7 +109,7 @@ public class MenuController {
         return "redirect:/cart";
     }
 
-    // 🔹 PAYMENT PAGE
+    
     @GetMapping("/payment")
     public String paymentPage(Model model, HttpSession session) {
 
@@ -124,7 +124,7 @@ public class MenuController {
         return "payment";
     }
 
-    // 🔹 PLACE ORDER
+    
     @PostMapping("/order")
     public String placeOrder(HttpSession session) {
 
@@ -168,21 +168,21 @@ public class MenuController {
 
         orderRepo.save(order);
 
-        // ✅ CLEAR CART
+        
         session.removeAttribute("cart");
         session.removeAttribute("prices");
 
         return "redirect:/orders";
     }
 
-    // 🔹 ORDER HISTORY (🔥 FIXED)
+    
     @GetMapping("/orders")
     public String orderHistory(Model model) {
         model.addAttribute("orders", orderRepo.findAll());
         return "orders";
     }
 
-    // 🔹 TRACK ORDERS
+    
     @GetMapping("/track")
     public String track(Model model) {
 
@@ -243,7 +243,7 @@ public class MenuController {
 
             int amount = (int) (total * 100); // in paise
 
-            // 🔥 CREATE RAZORPAY ORDER
+            
             com.razorpay.RazorpayClient client =
                     new com.razorpay.RazorpayClient("rzp_test_SVXcXvwVu4o7PM", "AzXeWwaAgMC1kg7NoXAGQW73");
 
@@ -254,11 +254,11 @@ public class MenuController {
 
             com.razorpay.Order order = client.orders.create(options);
 
-            // 🔥 RESPONSE TO FRONTEND
+            
             Map<String, Object> response = new HashMap<>();
             response.put("amount", amount);
             response.put("currency", "INR");
-            response.put("id", order.get("id"));   // ✅ VERY IMPORTANT
+            response.put("id", order.get("id"));   
 
             return response;
 
@@ -278,7 +278,7 @@ public class MenuController {
     ) {
 
         try {
-            String secret = "AzXeWwaAgMC1kg7NoXAGQW73"; // 🔥 replace
+            String secret = "AzXeWwaAgMC1kg7NoXAGQW73"; 
 
             String data = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -321,7 +321,7 @@ public class MenuController {
                 order.setItems(orderItems);
                 order.setTotal(total);
 
-                // 🔥 SAVE PAYMENT INFO
+                
                 order.setPaymentId(razorpay_payment_id);
                 order.setRazorpayOrderId(razorpay_order_id);
                 order.setSignature(razorpay_signature);

@@ -29,18 +29,18 @@ public class AuthController {
         return "signup";
     }
 
-    // ✅ REGISTER USER (FIXED)
+    
     @PostMapping("/register")
     public String signup(@RequestParam("name") String name,
                          @RequestParam("email") String email,
                          @RequestParam("password") String password) {
 
-        // 🔒 Basic validation
+        
         if (name.isEmpty() || email.isEmpty() || password.length() < 6) {
             return "redirect:/signup?error=true";
         }
 
-        // ❌ Prevent duplicate email
+        
         if (userRepo.findByEmail(email) != null) {
             return "redirect:/signup?exists=true";
         }
@@ -49,10 +49,10 @@ public class AuthController {
         user.setName(name);
         user.setEmail(email);
 
-        // 🔐 Hash password
+        
         user.setPassword(passwordEncoder.encode(password));
 
-        // ✅ DEFAULT ROLE
+        
         user.setRole("USER");
 
         userRepo.save(user);
@@ -60,7 +60,7 @@ public class AuthController {
         return "redirect:/";
     }
 
-    // ✅ LOGIN WITH ROLE-BASED REDIRECT
+    
     @PostMapping("/login")
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
@@ -72,7 +72,7 @@ public class AuthController {
 
             session.setAttribute("user", user);
 
-            // 🔥 ROLE BASED REDIRECT
+            
             if ("ADMIN".equals(user.getRole())) {
                 return "redirect:/admin";
             } else {
@@ -83,7 +83,7 @@ public class AuthController {
         return "redirect:/?error=true";
     }
 
-    // ✅ LOGOUT
+    
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

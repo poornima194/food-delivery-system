@@ -17,7 +17,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Orders order;
 
-    // GETTERS & SETTERS
+    
 
     public int getId() {
         return id;

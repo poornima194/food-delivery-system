@@ -12,10 +12,10 @@ public class Menu {
     private String itemName;
     private double price;
 
-    // ✅ ADD THIS FIELD
+    
     private String imageUrl;
 
-    // GETTERS & SETTERS
+    
 
     public int getMenuId() {
         return menuId;
@@ -41,7 +41,7 @@ public class Menu {
         this.price = price;
     }
 
-    // ✅ NEW GETTER & SETTER
+    
 
     public String getImageUrl() {
         return imageUrl;

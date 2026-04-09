@@ -20,13 +20,13 @@ import jakarta.servlet.http.HttpSession;
         this.menuRepo = menuRepo;
     }
 
-    // 🔐 CHECK ADMIN ACCESS
+    
     private boolean isAdmin(HttpSession session) {
         User user = (User) session.getAttribute("user");
         return user != null && "ADMIN".equals(user.getRole());
     }
 
-    // 🔹 ADMIN PAGE
+    
     @GetMapping
     public String adminPage(Model model, HttpSession session) {
 
@@ -40,13 +40,13 @@ import jakarta.servlet.http.HttpSession;
         return "admin";
     }
 
-    // 🔹 ADD ITEM
+    
     @PostMapping("/add")
     public String addItem(@ModelAttribute Menu item, HttpSession session) {
 
         if (!isAdmin(session)) return "redirect:/menu";
 
-        // ✅ Validation
+        
         if (item.getItemName() == null || item.getItemName().isEmpty() || item.getPrice() <= 0) {
             return "redirect:/admin?error=true";
         }
@@ -56,7 +56,7 @@ import jakarta.servlet.http.HttpSession;
         return "redirect:/admin";
     }
 
-    // 🔹 DELETE ITEM
+    
     @GetMapping("/delete")
     public String deleteItem(@RequestParam("id") int id, HttpSession session) {
 
@@ -69,7 +69,7 @@ import jakarta.servlet.http.HttpSession;
         return "redirect:/admin";
     }
 
-    // 🔹 EDIT PAGE
+    
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") int id, Model model, HttpSession session) {
 
@@ -81,7 +81,7 @@ import jakarta.servlet.http.HttpSession;
         return "edit-item";
     }
 
-    // 🔹 UPDATE ITEM (SAFE UPDATE)
+    
     @PostMapping("/update")
     public String updateItem(@ModelAttribute Menu item, HttpSession session) {
 
